@@ -6,6 +6,7 @@
 
 import { getUsers, getPosts } from './data/DataManager.js'
 import { PostList } from './feed/PostList.js'
+import { NavBar } from './nav/NavBar.js'
 
 const showPostList = () => {
     const postElement = document.querySelector(".postList");
@@ -21,8 +22,15 @@ const showPostList = () => {
     2. Are you defining the function here or invoking it?
 */
 
+const showNavBar = () => {
+    //Get a reference to the location on the DOM where the nav will display
+    const navElement = document.querySelector("nav");
+	navElement.innerHTML = NavBar();
+}
+
 const startGiffyGram = () => {
-    showPostList()
+    showPostList();
+    showNavBar();
 }
 
 // Are you defining the function here or invoking it?
