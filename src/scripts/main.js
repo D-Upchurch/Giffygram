@@ -4,17 +4,32 @@
 
 //Get a reference to the location on the DOM where the app will display
 
-import { getUsers, getPosts } from './data/DataManager.js'
+import { getUsers, getPosts, usePostCollection } from './data/DataManager.js'
 import { PostList } from './feed/PostList.js'
 import { NavBar } from './nav/NavBar.js'
 import { Footer } from './nav/Footer.js'
 
+const postElement = document.querySelector(".postList");
+
 const showPostList = () => {
-    const postElement = document.querySelector(".postList");
       getPosts().then((allPosts) => {
           postElement.innerHTML = PostList(allPosts);
       })
 };
+
+
+const showFilteredPosts = (year) => {
+    //get a copy of the post collection
+    const epoch = Date.parse(`01/01/${year}`);
+    //filter the data
+    const filteredData = usePostCollection().filter(singlePost => {
+      if (singlePost.timestamp >= epoch) {
+        return singlePost
+      }
+    })
+    postElement.innerHTML = PostList(filteredData);
+  }
+
 
 /*
     This function performs one, specific task.
@@ -24,11 +39,21 @@ const showPostList = () => {
 */
 const applicationElement = document.querySelector(".giffygram");
 
+applicationElement.addEventListener("click", (event) => {
+	
+	if (event.target.id.startsWith("edit")){
+		console.log("post clicked", event.target.id.split("--"))
+		console.log("the id is", event.target.id.split("--")[1])
+	}
+})
+
 applicationElement.addEventListener("change", event => {
     if (event.target.id === "yearSelection") {
       const yearAsNumber = parseInt(event.target.value)
   
       console.log(`User wants to see posts since ${yearAsNumber}`)
+      //invoke a filter function passing the year as an argument
+      showFilteredPosts(yearAsNumber);
     }
   })
 
