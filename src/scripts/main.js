@@ -4,16 +4,17 @@
 
 //Get a reference to the location on the DOM where the app will display
 
-import { getUsers, getPosts, usePostCollection } from './data/DataManager.js'
+import { getUsers, getPosts, usePostCollection, getLoggedInUser, createPost } from './data/DataManager.js'
 import { PostList } from './feed/PostList.js'
 import { NavBar } from './nav/NavBar.js'
 import { Footer } from './nav/Footer.js'
+import { PostEntry } from './feed/PostEntry.js'
 
 const postElement = document.querySelector(".postList");
 
 const showPostList = () => {
       getPosts().then((allPosts) => {
-          postElement.innerHTML = PostList(allPosts);
+          postElement.innerHTML = PostList(allPosts.reverse());
       })
 };
 
@@ -75,6 +76,46 @@ applicationElement.addEventListener("click", event => {
     }
 })
 
+applicationElement.addEventListener("click", event => {
+  if (event.target.id === "newPost__cancel") {
+      //clear the input fields
+  }
+})
+
+applicationElement.addEventListener("click", event => {
+  event.preventDefault();
+  if (event.target.id === "newPost__submit") {
+  //collect the input values into an object to post to the DB
+    const title = document.querySelector("input[name='postTitle']").value
+    const url = document.querySelector("input[name='postURL']").value
+    const description = document.querySelector("textarea[name='postDescription']").value
+    //we have not created a user yet - for now, we will hard code `1`.
+    //we can add the current time as well
+    const postObject = {
+        title: title,
+        imageURL: url,
+        description: description,
+        userId: getLoggedInUser().id,
+        timestamp: Date.now()
+    }
+
+  // be sure to import from the DataManager
+      createPost(postObject)
+      showPostList();
+      showPostEntry();
+      
+  
+  } else if(event.target.id === "newPost__cancel"){
+        showPostEntry();
+  };
+});
+
+const showPostEntry = () => { 
+  //Get a reference to the location on the DOM where the nav will display
+  const entryElement = document.querySelector(".entryForm");
+  entryElement.innerHTML = PostEntry();
+}
+
 const showNavBar = () => {
     //Get a reference to the location on the DOM where the nav will display
     const navElement = document.querySelector("nav");
@@ -87,8 +128,9 @@ const showFooter = () => {
 }
 
 const startGiffyGram = () => {
-    showPostList();
-    showNavBar();
+  showNavBar();
+  showPostEntry();
+  showPostList();
     showFooter();
 }
 
