@@ -65,14 +65,14 @@ applicationElement.addEventListener("click", event => {
       id: parseInt(postId)
     }
     
+    showPostEntry();
+    
     updatePost(postObject)
       .then(response => {
         showPostList();
       })
-      .then(response => {
-        showPostEntry();
-  })
-}});
+  }
+});
 
 applicationElement.addEventListener("click", event => {
   event.preventDefault();
