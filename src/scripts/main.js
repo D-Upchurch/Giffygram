@@ -4,7 +4,7 @@
 
 //Get a reference to the location on the DOM where the app will display
 
-import { getUsers, getPosts, usePostCollection, getLoggedInUser, createPost } from './data/DataManager.js'
+import { getUsers, getPosts, usePostCollection, deletePost, getLoggedInUser, createPost } from './data/DataManager.js'
 import { PostList } from './feed/PostList.js'
 import { NavBar } from './nav/NavBar.js'
 import { Footer } from './nav/Footer.js'
@@ -39,6 +39,17 @@ const showFilteredPosts = (year) => {
     2. Are you defining the function here or invoking it?
 */
 const applicationElement = document.querySelector(".giffygram");
+
+applicationElement.addEventListener("click", event => {
+  event.preventDefault();
+  if (event.target.id.startsWith("delete")) {
+    const postId = event.target.id.split("__")[1];
+    deletePost(postId)
+      .then(response => {
+        showPostList();
+      })
+  }
+})
 
 applicationElement.addEventListener("click", (event) => {
 	
@@ -85,12 +96,12 @@ applicationElement.addEventListener("click", event => {
 applicationElement.addEventListener("click", event => {
   event.preventDefault();
   if (event.target.id === "newPost__submit") {
-  //collect the input values into an object to post to the DB
+  //*collect the input values into an object to post to the DB
     const title = document.querySelector("input[name='postTitle']").value
     const url = document.querySelector("input[name='postURL']").value
     const description = document.querySelector("textarea[name='postDescription']").value
-    //we have not created a user yet - for now, we will hard code `1`.
-    //we can add the current time as well
+    //*we have not created a user yet - for now, we will hard code `1`.
+    //*we can add the current time as well
     const postObject = {
         title: title,
         imageURL: url,
@@ -100,8 +111,11 @@ applicationElement.addEventListener("click", event => {
     }
 
   // be sure to import from the DataManager
+    //* createPost sends the newly created Post Object to the json server
       createPost(postObject)
+    //* showPostList then immediately populates the dom with the new submission
       showPostList();
+    //* showPostEntry then resets the form by placing a fresh form for editing
       showPostEntry();
       
   
