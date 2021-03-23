@@ -13,7 +13,7 @@
   ],
   "posts": [
     {
-      "title": "James Franco",
+      "title": "James Franco winking",
       "imageURL": "https://media.giphy.com/media/wrBURfbZmqqXu/giphy.gif",
       "description": "Just a funny gif",
       "userId": 1,
@@ -37,9 +37,9 @@
       "id": 8
     },
     {
-      "title": "test 9",
+      "title": "You shall not pass!",
       "imageURL": "https://media.giphy.com/media/LOoDP5px2RjBvf58pn/giphy.gif",
-      "description": "test 9",
+      "description": "You shall not pass! - Gandalf",
       "userId": 1,
       "timestamp": 1615485499567,
       "id": 20
